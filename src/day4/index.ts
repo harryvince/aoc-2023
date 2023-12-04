@@ -5,7 +5,8 @@ const lines = readFileSync(join(__dirname, "input.txt"), "utf-8").split(/\n/);
 lines.pop();
 
 let challenge1 = 0;
-lines.map((line) => {
+const duplicateCount = lines.map(() => 0);
+lines.map((line, index) => {
   const split = line.split(":");
   const numbersSplit = split[1].split("|");
   const [winningNumbers, cardNumbers] = [
@@ -37,8 +38,15 @@ lines.map((line) => {
         score = score * 2;
       }
     }
+
+    const duplicates = duplicateCount[index] + 1;
+    for (let i = 1; i < ammountOfWinningNumbers + 1; i++) {
+      duplicateCount[index + i] += duplicates;
+    }
   }
   challenge1 += score;
 });
+const challenge2 = duplicateCount.reduce((a, b) => a + b) + lines.length;
 
 console.log(`Challenge 1 => ${challenge1}`);
+console.log(`Challenge 2 => ${challenge2}`);
